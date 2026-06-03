@@ -1,47 +1,563 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <title>Bri D'Urso WIP Home page</title>
-    <link rel="stylesheet" href="styles/main.css">
-  </head>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Brianna D'Urso</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:       #0d1117;
+      --bg2:      #161b22;
+      --bg3:      #1c2128;
+      --border:   #30363d;
+      --text:     #c9d1d9;
+      --muted:    #8b949e;
+      --accent:   #58a6ff;
+      --accent2:  #bc8cff;
+      --green:    #3fb950;
+      --red:      #f85149;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 15px;
+      line-height: 1.6;
+    }
+
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* ─── NAV ─── */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(13,17,23,0.92);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 2rem;
+      display: flex; align-items: center; justify-content: space-between;
+      height: 52px;
+    }
+    nav .name { font-weight: 600; font-size: 0.95rem; color: #e6edf3; letter-spacing: 0.01em; }
+    nav ul { list-style: none; display: flex; gap: 1.6rem; }
+    nav ul a { color: var(--muted); font-size: 0.85rem; transition: color 0.15s; }
+    nav ul a:hover { color: var(--text); text-decoration: none; }
+
+    /* ─── LAYOUT ─── */
+    .container { max-width: 820px; margin: 0 auto; padding: 0 1.5rem; }
+
+    section { padding: 4rem 0; border-bottom: 1px solid var(--border); }
+    section:last-of-type { border-bottom: none; }
+
+    h2 {
+      font-size: 1.25rem; font-weight: 600;
+      color: #e6edf3; margin-bottom: 1.8rem;
+      display: flex; align-items: center; gap: 0.6rem;
+    }
+    h2::before {
+      content: "";
+      display: inline-block; width: 3px; height: 1.1em;
+      background: var(--accent); border-radius: 2px;
+    }
+
+    /* ─── HERO ─── */
+    #hero {
+      padding: 5rem 0 4rem;
+      border-bottom: 1px solid var(--border);
+    }
+    #hero .tag {
+      display: inline-block;
+      font-size: 0.75rem; font-weight: 600; letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent); margin-bottom: 1rem;
+    }
+    #hero h1 {
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 700; color: #e6edf3; line-height: 1.15;
+      margin-bottom: 0.8rem;
+    }
+    #hero .subtitle {
+      font-size: 1.05rem; color: var(--muted);
+      max-width: 520px; margin-bottom: 1.8rem;
+    }
+    .btn-row { display: flex; flex-wrap: wrap; gap: 0.75rem; }
+    .btn {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      padding: 0.45rem 1rem;
+      border-radius: 6px; font-size: 0.85rem; font-weight: 500;
+      transition: opacity 0.15s;
+    }
+    .btn:hover { opacity: 0.85; text-decoration: none; }
+    .btn-primary { background: var(--accent); color: #0d1117; }
+    .btn-ghost {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text);
+    }
+
+    /* ─── ABOUT ─── */
+    .about-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+    }
+    @media (max-width: 580px) { .about-grid { grid-template-columns: 1fr; } }
+    .stat-card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 8px; padding: 1rem 1.2rem;
+    }
+    .stat-card .val { font-size: 1.5rem; font-weight: 700; color: #e6edf3; }
+    .stat-card .lbl { font-size: 0.78rem; color: var(--muted); margin-top: 0.1rem; }
+    .about-text { margin-bottom: 1.4rem; color: var(--text); }
+
+    /* ─── EXPERIENCE ─── */
+    .exp-item { margin-bottom: 2rem; }
+    .exp-item:last-child { margin-bottom: 0; }
+    .exp-header {
+      display: flex; flex-wrap: wrap;
+      justify-content: space-between; align-items: baseline;
+      margin-bottom: 0.25rem;
+    }
+    .exp-role { font-weight: 600; color: #e6edf3; font-size: 0.95rem; }
+    .exp-date { font-size: 0.78rem; color: var(--muted); white-space: nowrap; }
+    .exp-place { font-size: 0.85rem; color: var(--accent); margin-bottom: 0.5rem; }
+    .exp-item ul {
+      list-style: none; padding-left: 0;
+    }
+    .exp-item ul li {
+      position: relative; padding-left: 1.1rem;
+      font-size: 0.875rem; color: var(--muted);
+      margin-bottom: 0.3rem;
+    }
+    .exp-item ul li::before {
+      content: "–"; position: absolute; left: 0; color: var(--border);
+    }
+
+    /* ─── PROJECTS ─── */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 1rem;
+    }
+    @media (max-width: 420px) { .projects-grid { grid-template-columns: 1fr; } }
+    .proj-card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 8px; padding: 1.2rem 1.4rem;
+      display: flex; flex-direction: column;
+      transition: border-color 0.15s;
+    }
+    .proj-card:hover { border-color: var(--accent); }
+    .proj-card h3 { font-size: 0.9rem; font-weight: 600; color: #e6edf3; margin-bottom: 0.45rem; }
+    .proj-card p { font-size: 0.82rem; color: var(--muted); flex: 1; margin-bottom: 0.8rem; }
+    .tag-row { display: flex; flex-wrap: wrap; gap: 0.35rem; margin-top: auto; }
+    .tag {
+      font-size: 0.7rem; padding: 0.15rem 0.55rem;
+      border-radius: 99px; border: 1px solid var(--border);
+      color: var(--muted);
+    }
+    .tag.blue  { border-color: #1f6feb; color: var(--accent); }
+    .tag.purple{ border-color: #6e40c9; color: var(--accent2); }
+    .tag.green { border-color: #238636; color: var(--green); }
+    .tag.red   { border-color: #b62324; color: var(--red); }
+    .proj-link { font-size: 0.78rem; color: var(--accent); margin-top: 0.6rem; }
+
+    /* ─── PUBLICATIONS ─── */
+    .pub-item {
+      background: var(--bg2); border: 1px solid var(--border);
+      border-radius: 8px; padding: 1.1rem 1.3rem;
+      margin-bottom: 0.9rem;
+    }
+    .pub-item:last-child { margin-bottom: 0; }
+    .pub-title { font-weight: 600; color: #e6edf3; font-size: 0.9rem; margin-bottom: 0.3rem; }
+    .pub-venue { font-size: 0.8rem; color: var(--accent); }
+    .pub-authors { font-size: 0.78rem; color: var(--muted); margin-top: 0.15rem; }
+
+    /* ─── SKILLS ─── */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 1rem;
+    }
+    .skill-group {
+      background: var(--bg2); border: 1px solid var(--border);
+      border-radius: 8px; padding: 1rem 1.2rem;
+    }
+    .skill-group h3 { font-size: 0.78rem; font-weight: 600; color: var(--accent); text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 0.6rem; }
+    .skill-group ul { list-style: none; }
+    .skill-group ul li { font-size: 0.82rem; color: var(--muted); padding: 0.15rem 0; }
+
+    /* ─── EDUCATION ─── */
+    .edu-item { margin-bottom: 1.6rem; }
+    .edu-item:last-child { margin-bottom: 0; }
+    .edu-school { font-weight: 600; color: #e6edf3; }
+    .edu-degree { font-size: 0.85rem; color: var(--accent); margin: 0.1rem 0; }
+    .edu-meta { font-size: 0.78rem; color: var(--muted); }
+
+    /* ─── AWARDS ─── */
+    .awards-list { list-style: none; columns: 2; gap: 1.5rem; }
+    @media (max-width: 560px) { .awards-list { columns: 1; } }
+    .awards-list li {
+      font-size: 0.82rem; color: var(--muted);
+      padding: 0.2rem 0 0.2rem 1rem;
+      position: relative; break-inside: avoid;
+    }
+    .awards-list li::before { content: "◆"; position: absolute; left: 0; font-size: 0.55rem; top: 0.38rem; color: var(--accent2); }
+
+    /* ─── CONTACT ─── */
+    #contact { text-align: center; padding: 4rem 0 5rem; }
+    #contact p { color: var(--muted); margin-bottom: 1.5rem; max-width: 400px; margin-left: auto; margin-right: auto; }
+    .contact-links { display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; }
+
+    /* ─── FOOTER ─── */
+    footer {
+      text-align: center; padding: 1.5rem;
+      font-size: 0.75rem; color: var(--muted);
+      border-top: 1px solid var(--border);
+    }
+  </style>
+</head>
 <body>
-  <nav>
-    <ul>
-      <li class="menu-option"><a href="#">Menu 1</a>
-        <ul>
-          <li><a href="#">1.1</a></li>
-          <li><a href="#">1.2</a></li>
-          <li><a href="#">1.3</a></li>
-        </ul>
-      </li>
-      <li class="menu-option"><a href="#">Menu 2</a>
-        <ul>
-          <li><a href="#">2.1</a></li>
-          <li><a href="#">2.2</a></li>
-          <li><a href="#">2.3</a></li>
-        </ul>
-      </li>
-    </ul>
-  </nav>
-  <header>
-    <ul id="js-triggers">
-      <li><a href="#" id="show-menu">Show Menu</a></li>
-      <li><a href="#" id="show-modal" class="hidden">Show Modal</a>
-        <div class="modal-overlay-panel hidden">
-          <div class="modal-content-pane">
-            <div class="modal-content">This was a test function for an assignment for Intro to Internet Programming (CS355) at UHart. Yehaw!</div>
-          </div>
+
+<!-- NAV -->
+<nav>
+  <span class="name">Brianna D'Urso</span>
+  <ul>
+    <li><a href="#about">About</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#publications">Publications</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="container">
+    <h1>Brianna D'Urso</h1>
+    <p class="subtitle">
+      Researcher and developer interested in machine learning, optics, systems,
+      and wherever those intersect with interesting problems.
+    </p>
+    <div class="btn-row">
+      <a class="btn btn-primary" href="https://github.com/briidee3" target="_blank">
+        ⌥ GitHub
+      </a>
+      <a class="btn btn-ghost" href="#contact">Get in touch</a>
+      <a class="btn btn-ghost" href="#projects">Projects</a>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="container">
+    <h2>About</h2>
+    <p class="about-text">
+      Double major in Computer Science and Physics (minors in Cybersecurity, Math,
+      and Complexity) at the University of Hartford, graduating May 2026. I bring
+      together programming, hardware, and mathematics to approach problems from
+      unusual angles — published researcher, systems administrator, and hands-on
+      builder of both software and electronics.
+    </p>
+    <div class="about-grid">
+      <div class="stat-card">
+        <div class="val">3.93</div>
+        <div class="lbl">GPA · President's List every semester</div>
+      </div>
+      <div class="stat-card">
+        <div class="val">2</div>
+        <div class="lbl">Peer-reviewed publications (FLAIRS 2024, arXiv 2026)</div>
+      </div>
+      <div class="stat-card">
+        <div class="val">CS + Physics</div>
+        <div class="lbl">Double major · minors in Cybersecurity, Math, Complexity</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="container">
+    <h2>Experience</h2>
+
+    <div class="exp-item">
+      <div class="exp-header">
+        <span class="exp-role">Research Intern</span>
+        <span class="exp-date">Summer 2025</span>
+      </div>
+      <div class="exp-place">Tennessee Technological University — Cookeville, TN</div>
+      <ul>
+        <li>Applied state-of-the-art adversarial ML techniques to computer vision models on autonomous vehicles and devised mitigation strategies.</li>
+        <li>Built a robust custom dataset via augmentation and new data collection for training traffic sign detection models against adversarial patches.</li>
+        <li>Collaborated with PhD and graduate students; contributed to a paper now on arXiv.</li>
+      </ul>
+    </div>
+
+    <div class="exp-item">
+      <div class="exp-header">
+        <span class="exp-role">Systems Administrator</span>
+        <span class="exp-date">Fall 2022 – Summer 2025</span>
+      </div>
+      <div class="exp-place">University of Hartford — Department of Computing Sciences</div>
+      <ul>
+        <li>Managed servers, lab computers, and departmental systems for the Computing Sciences department.</li>
+        <li>Handled student account management, hardware troubleshooting, and application server administration.</li>
+      </ul>
+    </div>
+
+    <div class="exp-item">
+      <div class="exp-header">
+        <span class="exp-role">Private Tutor</span>
+        <span class="exp-date">Fall 2022</span>
+      </div>
+      <div class="exp-place">Independent / Freelance — Hartford, CT</div>
+      <ul>
+        <li>One-on-one tutoring for CS275 (Intro to Internet Programming) at the University of Hartford.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="container">
+    <h2>Projects</h2>
+    <div class="projects-grid">
+
+      <div class="proj-card">
+        <h3>Severe Weather Forecasting via Satellite Data</h3>
+        <p>Built an automated pipeline to derive Atmospheric Motion Vector (AMV) fields from GOES-16 satellite imagery with OCTANE and feed them into MS-RNN models for AMV field prediction — without any ground-based data. Published at FLAIRS-37 (2024).</p>
+        <div class="tag-row">
+          <span class="tag blue">Python</span>
+          <span class="tag">C</span>
+          <span class="tag green">ML</span>
+          <span class="tag">Published</span>
         </div>
-      </li>
-    </ul>
-  </header>
-  <main>
-    <h1>WORK IN PROGRESS!!</h1>
-    <p>This site is a work in progress. This site is a work in progress. This site is a work in progress. This site is a work in progress. This site is a work in progress. This site is a work in progress. This site is a work in progress. This site is a work in progress. This site is a work in progress. This site is a work in progress. This site is a work in progress. </p>
-    <h2>Care for some 'Lorem ipsum'?</h2>
-    <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quo reprehenderit minima saepe sunt quam qui omnis quos quia. Ipsam commodi accusantium, porro non rem eius cumque ratione asperiores ab vero.</p>
-  </main>
-  <script src="scripts/main.js"></script>
+        <a class="proj-link" href="https://github.com/briidee3/severe-weather-forecasting" target="_blank">→ github</a>
+      </div>
+
+      <div class="proj-card">
+        <h3>Adversarial Patches on Autonomous Vehicle Perception</h3>
+        <p>Explored naturalistic adversarial patch attacks on YOLO-based traffic sign detectors using a custom GTSRB-derived dataset. Includes evaluation of physical-world patch deployability and mitigation approaches. arXiv 2026.</p>
+        <div class="tag-row">
+          <span class="tag blue">Python</span>
+          <span class="tag green">ML / CV</span>
+          <span class="tag red">Adversarial</span>
+          <span class="tag">Published</span>
+        </div>
+        <a class="proj-link" href="https://github.com/briidee3/nap-attack-on-av" target="_blank">→ github</a>
+      </div>
+
+      <div class="proj-card">
+        <h3>Ray Optics Metamaterials Simulation</h3>
+        <p>Extended the Ray Optics Simulation open-source project with Bezier-bounded lenses, NURBS-based geometric ray tracing based on transformation optics, and support for negative refractive indices for studying metamaterial lenses.</p>
+        <div class="tag-row">
+          <span class="tag blue">JavaScript</span>
+          <span class="tag purple">Three.js</span>
+          <span class="tag">Optics</span>
+          <span class="tag">Research</span>
+        </div>
+        <a class="proj-link" href="https://github.com/briidee3/ray-optics-metamaterials" target="_blank">→ github</a>
+      </div>
+
+      <div class="proj-card">
+        <h3>NASA RockSat-X 2026</h3>
+        <p>Designing a novel double Langmuir probe (tape-measure rollout architecture for compact storage) tuned for plasma conditions in the low ionosphere (~100-150 km) for a UHart team experiment aboard a sounding rocket reaching low-Earth orbit conditions. Also wrote MCU firmware in C++ for mission control.</p>
+        <div class="tag-row">
+          <span class="tag">C++</span>
+          <span class="tag">Embedded</span>
+          <span class="tag blue">NASA</span>
+          <span class="tag">Hardware</span>
+        </div>
+        <a class="proj-link" href="https://github.com/briidee3/nasa-rocksat-2026-uhart-mcu" target="_blank">→ github</a>
+      </div>
+
+      <div class="proj-card">
+        <h3>Real-Time 3D Body Forces Simulation</h3>
+        <p>Framework for extrapolating 3D body-coordinate data from a laptop webcam and estimated limb lengths, enabling live physics calculations of force distribution in the human body. Presented at NASA CTSGC Expo, November 2024.</p>
+        <div class="tag-row">
+          <span class="tag blue">Python</span>
+          <span class="tag green">CV</span>
+          <span class="tag">Physics</span>
+          <span class="tag blue">NASA</span>
+        </div>
+      </div>
+
+      <div class="proj-card">
+        <h3>Decentralized Social Media Architecture Design and Development</h3>
+        <p>Contributed architecture and development to a FOSS social media platform for public post handling and working towards inter-protocol translation between ActivityPods, ActivityPub, and ATProto. Implemented a microservices backend with Kafka-based data stream pipelining for handling public user interactions at scale.</p>
+        <div class="tag-row">
+          <span class="tag blue">JavaScript</span>
+          <span class="tag purple">ActivityPub</span>
+          <span class="tag">Kafka</span>
+          <span class="tag">Microservices</span>
+        </div>
+        <a class="proj-link" href="https://github.com/briidee3/memory-sidecar" target="_blank">→ github</a>
+      </div>
+
+      <div class="proj-card">
+        <h3>Q-Learning Applied to Battleship</h3>
+        <p>Developed a methodology for training Q-tables on the combinatorially explosive state space of Battleship, independently arriving at a hierarchical Q-learning approach to make the problem tractable.</p>
+        <div class="tag-row">
+          <span class="tag blue">Python</span>
+          <span class="tag green">RL</span>
+        </div>
+        <a class="proj-link" href="https://github.com/briidee3/qlearning-battleship" target="_blank">→ github</a>
+      </div>
+
+      <div class="proj-card">
+        <h3>Wearable Arm-Mounted Display</h3>
+        <p>Designed and 3D-printed two generations of wearable arm-mounted displays — a touch-screen device powered by an Adafruit Feather Sense, and a successor built around a Raspberry Pi Zero 2W — including custom wiring, CAD enclosures, and firmware.</p>
+        <div class="tag-row">
+          <span class="tag">Embedded</span>
+          <span class="tag">3D Print</span>
+          <span class="tag blue">Raspberry Pi</span>
+          <span class="tag">Hardware</span>
+        </div>
+        <a class="proj-link" href="https://github.com/briidee3/FitbitHUD" target="_blank">→ github</a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- PUBLICATIONS -->
+<section id="publications">
+  <div class="container">
+    <h2>Publications</h2>
+
+    <div class="pub-item">
+      <div class="pub-title">"Physical Evaluation of Naturalistic Adversarial Patches for Camera-Based Traffic-Sign Detection"</div>
+      <div class="pub-venue">arXiv preprint arXiv:2603.00217 · 2026</div>
+      <div class="pub-authors">D'Urso, Brianna, et al.</div>
+    </div>
+
+    <div class="pub-item">
+      <div class="pub-title">"Severe weather forecasting via the sole use of satellite data"</div>
+      <div class="pub-venue">The International FLAIRS Conference Proceedings · Vol. 37 · 2024</div>
+      <div class="pub-authors">D'Urso, Brianna, et al. — presented at FLAIRS-37 (NSF Travel Award)</div>
+    </div>
+  </div>
+</section>
+
+<!-- EDUCATION -->
+<section id="education">
+  <div class="container">
+    <h2>Education</h2>
+
+    <div class="edu-item">
+      <div class="edu-school">University of Hartford — West Hartford, CT</div>
+      <div class="edu-degree">B.S. Computer Science & Physics (Double Major) · Minors: Cybersecurity, Math, Complexity</div>
+      <div class="edu-meta">August 2020 – May 2026 · GPA 3.93 · President's Scholar · Senior Regents' Honors Award</div>
+    </div>
+
+    <div class="edu-item">
+      <div class="edu-school">Laboratory for Physical Sciences — Online</div>
+      <div class="edu-degree">Quantum Computing Summer Short Course</div>
+      <div class="edu-meta">Summer 2024 · Gates, algorithms, hardware — led by industry and academic researchers</div>
+    </div>
+
+    <div class="edu-item">
+      <div class="edu-school">Central Connecticut State University — Hartford, CT</div>
+      <div class="edu-degree">Computer Science (concurrent with high school)</div>
+      <div class="edu-meta">Spring 2019 – Fall 2019 · GPA 3.53</div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="container">
+    <h2>Skills</h2>
+    <div class="skills-grid">
+      <div class="skill-group">
+        <h3>Languages</h3>
+        <ul>
+          <li>Python</li>
+          <li>JavaScript / TypeScript</li>
+          <li>C / C++ / C#</li>
+          <li>Bash</li>
+          <li>Java</li>
+          <li>HTML / CSS / GLSL</li>
+        </ul>
+      </div>
+      <div class="skill-group">
+        <h3>ML &amp; Data</h3>
+        <ul>
+          <li>PyTorch / Ultralytics (YOLO)</li>
+          <li>scikit-learn, NumPy, SciPy</li>
+          <li>Dataset construction &amp; augmentation</li>
+          <li>Adversarial ML</li>
+          <li>Reinforcement learning</li>
+        </ul>
+      </div>
+      <div class="skill-group">
+        <h3>Systems &amp; Infra</h3>
+        <ul>
+          <li>Linux (Arch, Debian)</li>
+          <li>Windows Server, Active Directory</li>
+          <li>Docker Compose</li>
+          <li>OPNSense · site-to-site VPN</li>
+          <li>Server / network admin</li>
+        </ul>
+      </div>
+      <div class="skill-group">
+        <h3>Web &amp; Backend</h3>
+        <ul>
+          <li>Vue, React</li>
+          <li>Three.js</li>
+          <li>ActivityPub / Fediverse</li>
+          <li>KafkaJS</li>
+          <li>Microservices architecture</li>
+        </ul>
+      </div>
+      <div class="skill-group">
+        <h3>Hardware</h3>
+        <ul>
+          <li>Arduino, ESP32, Raspberry Pi</li>
+          <li>3D printing &amp; CAD</li>
+          <li>Circuit design &amp; soldering</li>
+          <li>Firmware / hardware hacking</li>
+          <li>Reverse engineering</li>
+        </ul>
+      </div>
+      <div class="skill-group">
+        <h3>Other</h3>
+        <ul>
+          <li>Binary exploitation (basics)</li>
+          <li>OpenGL / GLSL shaders</li>
+          <li>NURBS &amp; computational geometry</li>
+          <li>LaTeX</li>
+          <li>Git / GitHub</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="container">
+    <h2 style="justify-content:center">Get in Touch</h2>
+    <p>Open to research collaborations, internships, and interesting problems.</p>
+    <div class="contact-links">
+      <a class="btn btn-primary" href="mailto:brid3@proton.me">brid3@proton.me</a>
+      <a class="btn btn-ghost" href="https://github.com/briidee3" target="_blank">github.com/briidee3</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  Brianna D'Urso · Connecticut, USA
+</footer>
+
 </body>
 </html>
